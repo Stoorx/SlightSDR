@@ -9,17 +9,14 @@
 
 class MainWindow : public wxFrame {
 public:
-	MainWindow(IView* view);
+	MainWindow();
 private:
-	IView* _view;
 };
 
 
 
-MainWindow::MainWindow(IView* view) {
-	_view = view;
-
-	Create(nullptr, wxID_ANY, L"SlightSDR");
+MainWindow::MainWindow() {
+	Сreate(nullptr, wxID_ANY, L"SlightSDR");
 	SetIcon(wxIcon("wxwin.ico", wxBITMAP_TYPE_ICO));
 	SetSize(wxSize(800, 480));
 	SetBackgroundColour(wxColour(250, 250, 250));
@@ -30,19 +27,27 @@ MainWindow::MainWindow(IView* view) {
 	auto menuView = new wxMenu();
 	menuView->Append(new wxMenuItem(nullptr, wxID_ANY, L"Четотам"));
 
+	auto menuAbout = new wxMenu();
+	menuAbout->Append(new wxMenuItem(nullptr, wxID_ANY, L"Справка по программе"));
+	menuAbout->Append(new wxMenuItem(nullptr, wxID_ANY, L"О программе"));
+
 	auto menuBar = new wxMenuBar();
 	menuBar->Append(menuFile, L"Файл");
 	menuBar->Append(menuView, L"Вид");
+	menuBar->Append(menuAbout, L"Справка");
 	SetMenuBar(menuBar);
 
-	auto splitView = new wxSplitterWindow(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSP_LIVE_UPDATE | wxSP_NO_XP_THEME | wxSP_3DSASH | wxSP_THIN_SASH);
-	auto left = new LeftPanel(splitView);
-
+	auto left = new LeftPanel(this);
+	left->SetMinSize(wxSize(200, wxDefaultSize.GetY()));
 	
-	auto right = new wxTextCtrl(splitView, wxID_ANY, L"ФАК Ю!");
+	auto right = new wxTextCtrl(this, wxID_ANY);
 	right->SetWindowStyleFlag(wxTE_MULTILINE);
-	splitView->SplitVertically(left, right, 300);
-	splitView->SetSashInvisible(false);
+	
+	auto sizer = new wxBoxSizer(wxHORIZONTAL);
+	sizer->Add(left, 0, wxEXPAND);
+	sizer->Add(right, 1, wxEXPAND);
+
+	SetSizer(sizer);
 
 	Show();
 }

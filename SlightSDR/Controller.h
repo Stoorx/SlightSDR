@@ -20,6 +20,17 @@ public:
 	virtual int OnExit() override;
 
 	virtual const std::wstring& getApplicationPath() const override;
+	virtual const IView& getView() const override;
+
+	// Commands
+	// Play
+	virtual void Play() override {
+		view->SetPlayStatus();
+	}
+	// Stop
+	virtual void Stop() override {
+		view->SetStopStatus();
+	}
 private:
 	IView* view;
 	IModel* model;
@@ -50,13 +61,13 @@ bool Controller::OnInit() {
 	applicationPath = wxPathOnly(argv[0]);
 
 	// Create splash
-	wxImage logoImage(applicationPath + L"\\resources\\splash.png", wxBITMAP_TYPE_PNG, wxID_ANY);
+	//wxImage logoImage(applicationPath + L"\\resources\\splash.png", wxBITMAP_TYPE_PNG, wxID_ANY);
 
-	wxSplashScreen splash(wxBitmap(logoImage), wxSPLASH_CENTRE_ON_SCREEN | wxSPLASH_NO_TIMEOUT, 0, nullptr, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxFRAME_NO_TASKBAR);
+	//wxSplashScreen splash(wxBitmap(logoImage), wxSPLASH_CENTRE_ON_SCREEN | wxSPLASH_NO_TIMEOUT, 0, nullptr, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxFRAME_NO_TASKBAR);
 	//wxAppConsole::Yield();
 		
 	wxEventLoopBase::GetActive()->Yield();
-
+	//std::this_thread::sleep_for(std::chrono::seconds(10));
 	g_Controller = this;
 	
 	model = new Model();
@@ -64,7 +75,7 @@ bool Controller::OnInit() {
 
 	view = new View(this, model);
 	g_View = view;
-	splash.Show(false);
+	//splash.Show(false);
 	return true;
 }
 
@@ -78,5 +89,7 @@ const std::wstring& Controller::getApplicationPath() const {
 	return applicationPath;
 }
 
-
+const IView& Controller::getView() const {
+	return *view;
+}
 

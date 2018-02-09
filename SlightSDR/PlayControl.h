@@ -9,6 +9,14 @@
 class PlayControl : public wxPanel {
 public:
 	PlayControl(wxWindow* parent);
+private:
+	// Play/pause button handler
+	void playPauseButton_Click(wxCommandEvent& event) {
+		g_Controller->Play();
+	}
+	void stopButton_Click(wxCommandEvent& event) {
+		g_Controller->Stop();
+	}
 };
 
 PlayControl::PlayControl(wxWindow* parent) {
@@ -17,18 +25,24 @@ PlayControl::PlayControl(wxWindow* parent) {
 	Create(parent, wxID_ANY);
 
 	// Add sizer
-	auto sizer = new wxBoxSizer(wxHORIZONTAL);
+	auto sizer = new wxGridSizer(4, 3, 3);
 	SetSizer(sizer);
 	
-	sizer->AddSpacer(5);
 	// Play/pause button
-	auto playPauseButton = new wxBitmapButton(this, wxID_ANY, wxBitmap(), wxDefaultPosition, wxSize(32, 32));
-	sizer->Add(playPauseButton, 0, wxTOP | wxBOTTOM, 3);
-	sizer->AddSpacer(3);
-	// Stop button
-	auto stopButton = new wxBitmapButton(this, wxID_ANY, wxBitmap(), wxDefaultPosition, wxSize(32, 32));
-	sizer->Add(stopButton, 0, wxTOP | wxBOTTOM, 3);
-
+	auto playPauseButton = new wxBitmapButton(this, wxID_ANY, wxBitmap(wxImage(basePath + L"\\resources\\icons\\play24.png", wxBITMAP_TYPE_PNG)), wxDefaultPosition);
+	playPauseButton->Bind(wxEVT_BUTTON, &PlayControl::playPauseButton_Click, this);
+	sizer->Add(playPauseButton, 0, wxEXPAND);
 	
+	// Stop button
+	auto stopButton = new wxBitmapButton(this, wxID_ANY, wxBitmap(wxImage(basePath + L"\\resources\\icons\\stop24.png", wxBITMAP_TYPE_PNG)), wxDefaultPosition);
+	stopButton->Bind(wxEVT_BUTTON, &PlayControl::stopButton_Click, this);
+	sizer->Add(stopButton, 0, wxEXPAND);
 
+	// Record button
+	auto recordButton = new wxBitmapButton(this, wxID_ANY, wxBitmap(wxImage(basePath + L"\\resources\\icons\\record24.png", wxBITMAP_TYPE_PNG)), wxDefaultPosition);
+	sizer->Add(recordButton, 0, wxEXPAND);
+	
+	// Mute button
+	auto muteButton = new wxBitmapButton(this, wxID_ANY, wxBitmap(wxImage(basePath + L"\\resources\\icons\\mute24.png", wxBITMAP_TYPE_PNG)), wxDefaultPosition);
+	sizer->Add(muteButton, 0, wxEXPAND);
 }

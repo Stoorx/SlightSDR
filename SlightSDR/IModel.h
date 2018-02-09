@@ -9,4 +9,8 @@ public:
 	
 	// Setters
 	//virtual void setBaseFrequency() = 0;
+	enum class ModelStatement : uint32_t {
+		Stop,
+		Run
+	};
 };

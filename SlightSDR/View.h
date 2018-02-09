@@ -11,6 +11,12 @@ public:
 	View(IController* controller, IModel* model);
 	~View();
 
+	virtual void SetPlayStatus() override {
+		mainWindow->SetTitle(L"Playing!");
+	}
+	virtual void SetStopStatus() override {
+		mainWindow->SetTitle(L"Stopped!");
+	}
 private:
 	MainWindow* mainWindow;
 
@@ -22,7 +28,7 @@ View::View(IController* controller, IModel* model)
 {
 	_controller = controller;
 	_model = model;
-	mainWindow = new MainWindow(this);
+	mainWindow = new MainWindow();
 }
 
 View::~View()
